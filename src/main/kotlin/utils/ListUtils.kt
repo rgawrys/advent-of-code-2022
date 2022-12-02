@@ -12,4 +12,3 @@ fun <T, R> List<T>.chunkedBy(keySelector: (T) -> Boolean, transform: (T) -> R): 
             }
         }
     }
-
