@@ -12,3 +12,12 @@ fun <T, R> List<T>.chunkedBy(keySelector: (T) -> Boolean, transform: (T) -> R): 
             }
         }
     }
+
+fun <T> List<T>.splitIntoParts(parts: Int): List<List<T>> {
+    val remainder = this.size % 2
+    val chunkSize = (this.size / parts) + remainder
+    return this.chunked(chunkSize)
+}
+
+fun <T> List<List<T>>.intersectAll(): Set<T> =
+    this.fold(this.first().toSet()) { acc, item -> acc.intersect(item.toSet()) }
