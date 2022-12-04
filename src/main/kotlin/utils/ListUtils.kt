@@ -20,4 +20,7 @@ fun <T> List<T>.splitIntoParts(parts: Int): List<List<T>> {
 }
 
 fun <T> List<List<T>>.intersectAll(): Set<T> =
-    this.fold(this.first().toSet()) { acc, item -> acc.intersect(item.toSet()) }
+    takeIf { this.isNotEmpty() }
+        ?.fold(this.first().toSet()) { acc, item -> acc intersect item.toSet() }
+        ?.toSet()
+        ?: emptySet()
