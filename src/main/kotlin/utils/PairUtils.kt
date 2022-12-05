@@ -1,7 +1,7 @@
 package utils
 
-fun <T> Pair<Set<T>, Set<T>>.oneRangeFullyContainOther(): Boolean =
-    (this.first intersect this.second).size in setOf(this.first.size, this.second.size)
+fun Pair<IntRange, IntRange>.oneRangeFullyContainOther(): Boolean =
+    (this.first intersect this.second).count() in setOf(this.first.count(), this.second.count())
 
-fun <T> Pair<Set<T>, Set<T>>.rangesOverlap(): Boolean =
-    (this.first intersect this.second).isNotEmpty()
+fun Pair<IntRange, IntRange>.rangesOverlap(): Boolean =
+    this.first overlap this.second

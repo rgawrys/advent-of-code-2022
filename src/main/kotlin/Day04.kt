@@ -23,6 +23,8 @@ fun main() {
     println(part2(input))
 }
 
+private val inputLineRegex = """(\d+)-(\d+),(\d+)-(\d+)""".toRegex()
+
 private fun countPairsThatOneRangeFullyContainOther(sectionAssignmentsForEachPairList: List<String>) =
     countPairsBy(sectionAssignmentsForEachPairList) { it.oneRangeFullyContainOther() }
 
@@ -31,21 +33,24 @@ private fun countPairsThatRangesOverlap(sectionAssignmentsForEachPairList: List<
 
 private fun countPairsBy(
     sectionAssignmentsForEachPairList: List<String>,
-    condition: (Pair<Set<Int>, Set<Int>>) -> Boolean
+    condition: (Pair<IntRange, IntRange>) -> Boolean
 ) =
     sectionAssignmentsForEachPairList
-        .map(String::toPair)
-        .map(Pair<String, String>::toPairSections)
+        .map(String::toPairSection)
         .count(condition)
 
-private fun Pair<String, String>.toPairSections(): Pair<Set<Int>, Set<Int>> =
-    this.let { it.first.toSection() to it.second.toSection() }
+private fun String.toPairSection(): Pair<IntRange, IntRange> =
+    inputLineRegex.matchEntire(this)!!.destructured
+        .let { (startX, endX, startY, endY) -> startX.toInt()..endX.toInt() to startY.toInt()..endY.toInt() }
 
-private fun String.toSection(): Set<Int> =
-    this.split("-")
-        .let { it[0].toInt() to it[1].toInt() }
-        .let { it.first..it.second }
-        .let { it.toSet() }
-
-private fun String.toPair(): Pair<String, String> =
-    this.split(",").let { it[0] to it[1] }
+// parsing input using split function
+// private fun Pair<String, String>.toPairSections(): Pair<IntRange, IntRange> =
+//     this.let { it.first.toSection() to it.second.toSection() }
+//
+// private fun String.toSection(): IntRange =
+//     this.split("-")
+//         .let { it[0].toInt() to it[1].toInt() }
+//         .let { it.first..it.second }
+//
+// private fun String.toPair(): Pair<String, String> =
+//     this.split(",").let { it[0] to it[1] }
