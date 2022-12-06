@@ -21,14 +21,14 @@ fun main() {
 
 private const val START_OF_PACKAGE_MARKER_SIZE = 4
 private const val START_OF_MESSAGE_MARKER_SIZE = 14
+
 private fun String.startOfPacketMarkerIndex(): Int =
     this.firstMarkerAfterSequenceOfDifferentCharactersIndex(START_OF_PACKAGE_MARKER_SIZE)
+
 private fun String.startOfMessageMarkerIndex(): Int =
     this.firstMarkerAfterSequenceOfDifferentCharactersIndex(START_OF_MESSAGE_MARKER_SIZE)
 
-private fun String.firstMarkerAfterSequenceOfDifferentCharactersIndex(sequenceSize: Int): Int =
-    this
-        .windowed(sequenceSize, 1)
-        .takeWhile { it.toCharArray().distinct().size != sequenceSize }
-        .size
-        .let { it + sequenceSize }
+private fun String.firstMarkerAfterSequenceOfDifferentCharactersIndex(sequenceSize: Int): Int = this
+    .windowedSequence(sequenceSize, 1)
+    .indexOfFirst { it.toCharArray().distinct().size == sequenceSize }
+    .let { it + sequenceSize }
